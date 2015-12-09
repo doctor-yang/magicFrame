@@ -1,1 +1,2 @@
 # magicFrame
+lorem
