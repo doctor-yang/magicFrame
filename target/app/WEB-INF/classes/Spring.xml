@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/context
+   http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/mvc
+     http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+     
+    <context:component-scan base-package="com.yang.app"/>
+    <context:property-placeholder location="classpath:jdbc.properties"/>
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+       destroy-method="close">
+       <property name="driverClassName" value="${driverClassName}" />
+       <property name="url" value="${url}" />
+       <property name="username" value="${username}" />
+       <property name="password" value="${password}" />
+    </bean>
+ 
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+       <property name="dataSource" ref="dataSource" />
+       <property name="mapperLocations" value="classpath:mapper/*.xml"/>
+       <property name="typeAliasesPackage" value="com.yang.app.model" />
+    </bean>
+ 
+    <!-- <bean id="blogMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">
+       <property name="mapperInterface"
+           value="com.tiantian.mybatis.mapper.BlogMapper" />
+       <property name="sqlSessionFactory" ref="sqlSessionFactory" />
+    </bean> -->
+    <!-- data OR mapping interface --> 
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+       <property name="basePackage" value="com.yang.app.dao" />  
+       <!-- <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/> -->
+    </bean>
+ 
+</beans>
